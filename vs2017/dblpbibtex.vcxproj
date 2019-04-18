@@ -19,18 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\bib_get.hpp" />
-    <ClInclude Include="..\..\src\bib_search.hpp" />
-    <ClInclude Include="..\..\src\core.hpp" />
-    <ClInclude Include="..\..\src\network.hpp" />
-    <ClInclude Include="..\..\src\parse_bib.hpp" />
+    <ClInclude Include="..\src\bib_get.hpp" />
+    <ClInclude Include="..\src\bib_search.hpp" />
+    <ClInclude Include="..\src\core.hpp" />
+    <ClInclude Include="..\src\network.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\dblpbibtex.cpp" />
+    <ClCompile Include="..\src\dblpbibtex.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\configure.ac" />
-    <None Include="..\..\LICENSE" />
+    <None Include="..\configure.ac" />
+    <None Include="..\Makefile.am" />
+    <None Include="..\README.md" />
+    <None Include="..\version" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\LICENSE.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -90,8 +94,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\libcurl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\..\libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\libcurl\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -100,8 +104,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\libcurl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\..\libcurl\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\libcurl\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)..\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -121,17 +125,18 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>..</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libcurl_a.lib;Normaliz.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,7 +160,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -164,13 +168,13 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\..\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>libcurl_a.lib;Normaliz.lib;Crypt32.lib;ws2_32.lib;winmm.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>LinkVerboseLib</ShowProgress>
     </Link>
