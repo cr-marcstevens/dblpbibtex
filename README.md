@@ -2,8 +2,6 @@
 
 BibTeX wrapper for automatic DBLP &amp; IACR ePrint downloads
 
-(Note: this is the new repository for DBLP BibTeX, the current version is from May 2016.)
-
 ## What is DBLP BibTeX?
 
 DBLP BibTeX is a BibTeX aid program that can automatically download citations and cross references from the [DBLP Computer Science Bibliography](http://www.dblp.org) and the [Cryptology ePrint Archive](http://eprint.iacr.org) and add them to your BIB file. Furthermore, when explicitely enabled it also allows you to search these archives and automatically insert up to 5 matched citations into your .tex file. DBLP BibTeX acts as a BibTeX replacement that needs to be called from your TeX environment instead of the original BibTeX, after it has finished its work it will call the original BibTeX to proceed as usual.
@@ -58,7 +56,7 @@ Usage:
 
 ## Copyright and Licence
 
-Copyright Marc Stevens 2010 - 2019. Distributed under the Boost Software License, Version 1.0, copy available [here](LICENSE_1_0.txt).
+Copyright Marc Stevens 2010 - 2019. Distributed under the Boost Software License, Version 1.0, copy available [here](LICENSE.txt).
 
 ## Feedback
 
