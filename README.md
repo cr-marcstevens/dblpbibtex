@@ -8,16 +8,15 @@ BibTeX wrapper for automatic DBLP &amp; IACR ePrint downloads
 
 DBLP BibTeX is a BibTeX aid program that can automatically download citations and cross references from the [DBLP Computer Science Bibliography](http://www.dblp.org) and the [Cryptology ePrint Archive](http://eprint.iacr.org) and add them to your BIB file. Furthermore, when explicitely enabled it also allows you to search these archives and automatically insert up to 5 matched citations into your .tex file. DBLP BibTeX acts as a BibTeX replacement that needs to be called from your TeX environment instead of the original BibTeX, after it has finished its work it will call the original BibTeX to proceed as usual.
 
-## Download DBLP BibTeX for Windows
-
-A windows executable can be downloaded [here](dblpbibtex.exe).
-
 ## Building DBLP BibTeX
 
-The source file can be downloaded [here](dblpbibtex.cpp) and an example Makefile [here](Makefile). DBLP BibTeX depends on the [Boost C++ Libraries](http://www.boost.org). If these are properly installed then simply run:  
-`make`  
-or something like:  
-`g++ -O2 -pthread -march=native -o dblpbibtex dblpbibtex.cpp -lboost_system -lboost_program_options -lboost_filesystem -lpthread`  
+DBLP BibTex depends on autotools, a C++17 compatible compiler and libcurl.
+If these are properly installed then simply run:
+```
+   autoreconf --install
+   ./configure
+   make
+```
 
 ## Installing DBLP BibTeX
 
@@ -59,7 +58,7 @@ Usage:
 
 ## Copyright and Licence
 
-Copyright Marc Stevens 2010 - 2011\. Distributed under the Boost Software License, Version 1.0, copy available [here](LICENSE_1_0.txt).
+Copyright Marc Stevens 2010 - 2019. Distributed under the Boost Software License, Version 1.0, copy available [here](LICENSE_1_0.txt).
 
 ## Feedback
 
@@ -68,17 +67,4 @@ Any comments, requests, improvements, etc. can be send to: marc(replacebyAT)marc
 ## Thanks
 
 Thanks go out to Peter van Liesdonk for providing patches and feedback.
-
-## Version History
-
-*   **(20-april-2018):** Moved repository to GitHub
-*   **1.08 (19-may-2016):** Fixed DBLP website change (www.dblp.org => dblp.org).
-*   **1.07 (10-feb-2015):** Fixed DBLP download of citations.
-*   **1.06 (8-jan-2013):** Fixed IACR ePrint search.
-*   **1.05 (22-okt-2011):** Run bibtex even in the case of exceptions. More graceful offline handling.
-*   **1.04 (19-sept-2011):** Fixed configurationfile parser bugs.
-*   **1.03 (19-sept-2011):** Updated DBLP server to www.dblp.org.
-*   **1.02:** More bug fixes. Beta release.
-*   **1.01:** Bug fixes.
-*   **1.00:** First alpha release.
-
+Christian Cachin and Bart Mennink for telling me how useful this program can be.
