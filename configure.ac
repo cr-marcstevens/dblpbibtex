@@ -34,11 +34,27 @@ AS_IF([test "x$cross_compiling" != "xyes" && test "x$usedefaultcxxflags" = "xyes
 	[AX_CHECK_COMPILE_FLAG([-march=native], [CXXFLAGS="$CXXFLAGS -march=native"], [])])
 
 
-AX_CXX_COMPILE_STDCXX([17],[noext],[mandatory])
 
-AC_MSG_CHECKING([for C++17 filesystem header])
-CXX17FILESYSTEMHEADER=""
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <filesystem>]])],
+AX_BOOST_BASE([1.57],
+[
+ AX_BOOST_FILESYSTEM
+ AX_BOOST_SYSTEM
+
+ CPPFLAGS="$BOOST_CPPFLAGS $CPPFLAGS"
+ LDFLAGS="$BOOST_LDFLAGS $LDFLAGS"
+ LIBS="$BOOST_FILESYSTEM_LIB $BOOST_SYSTEM_LIB $LIBS"
+ CXX17FILESYSTEMHEADER="<boost/filesystem.hpp>"
+ CXX17FILESYSTEMNAMESPACE="boost::filesystem"
+
+ AX_CXX_COMPILE_STDCXX([11],[noext],[mandatory])
+]
+,
+[
+ AX_CXX_COMPILE_STDCXX([17],[noext],[mandatory])
+
+ AC_MSG_CHECKING([for C++17 filesystem header])
+ CXX17FILESYSTEMHEADER=""
+ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <filesystem>]])],
 	[CXX17FILESYSTEMHEADER="<filesystem>"
 	 CXX17FILESYSTEMNAMESPACE="std::filesystem"], 
 	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <experimental/filesystem>]])],
@@ -46,10 +62,10 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <filesystem>]])],
 		 CXX17FILESYSTEMNAMESPACE="std::experimental::filesystem"
 		 ])
 	)
-AS_IF([test "x$CXX17FILESYSTEMHEADER" = "x"], AC_MSG_ERROR([not found]), AC_MSG_RESULT($CXX17FILESYSTEMHEADER))
+ AS_IF([test "x$CXX17FILESYSTEMHEADER" = "x"], AC_MSG_ERROR([not found]), AC_MSG_RESULT($CXX17FILESYSTEMHEADER))
 
-AC_MSG_CHECKING([for C++17 filesystem library])
-AC_LINK_IFELSE([AC_LANG_PROGRAM([[@%:@include $CXX17FILESYSTEMHEADER]],[[return $CXX17FILESYSTEMNAMESPACE :: exists(".");]])],
+ AC_MSG_CHECKING([for C++17 filesystem library])
+ AC_LINK_IFELSE([AC_LANG_PROGRAM([[@%:@include $CXX17FILESYSTEMHEADER]],[[return $CXX17FILESYSTEMNAMESPACE :: exists(".");]])],
 	[AC_MSG_RESULT([not needed])],
 	[LIBS="$LIBS -lstdc++fs";
 	AC_LINK_IFELSE([AC_LANG_PROGRAM([[@%:@include $CXX17FILESYSTEMHEADER]],[[return $CXX17FILESYSTEMNAMESPACE :: exists(".");]])],
@@ -57,11 +73,12 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM([[@%:@include $CXX17FILESYSTEMHEADER]],[[return 
 		[AC_MSG_FAILURE([not found])]
 		)
 	])
+])
 
 AC_DEFINE_UNQUOTED([CXX17FILESYSTEMHEADER],[$CXX17FILESYSTEMHEADER],[header file for C++17 filesystem])
 AC_DEFINE_UNQUOTED([CXX17FILESYSTEMNAMESPACE],[$CXX17FILESYSTEMNAMESPACE],[namespace for C++17 filesystem])
 
-AX_PTHREAD()
+
 
 LIBCURL_CHECK_CONFIG()
 
