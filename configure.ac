@@ -37,6 +37,7 @@ AS_IF([test "x$cross_compiling" != "xyes" && test "x$usedefaultcxxflags" = "xyes
 
 AX_BOOST_BASE([1.57],
 [
+ AC_MSG_NOTICE([Boost C++ libraries found, will use C++11 and Boost filesystem module])
  AX_BOOST_FILESYSTEM
  AX_BOOST_SYSTEM
 
@@ -50,6 +51,7 @@ AX_BOOST_BASE([1.57],
 ]
 ,
 [
+ AC_MSG_NOTICE([Boost C++ libraries not found, will use C++17 filesystem module])
  AX_CXX_COMPILE_STDCXX([17],[noext],[mandatory])
 
  AC_MSG_CHECKING([for C++17 filesystem header])
