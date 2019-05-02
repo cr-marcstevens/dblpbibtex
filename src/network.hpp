@@ -54,8 +54,13 @@ public:
 		// initialize
 		_init();
 		_curl = curl_easy_init();
+#ifdef USE_CURL_FORM
+		curl_httppost* post = nullptr;
+		curl_httppost* last = nullptr;
+#else
 		curl_mime* mime = nullptr;
 		curl_mimepart* part = nullptr;
+#endif
 
 #ifdef GET_URL_DEBUG
 		curl_easy_setopt(_curl, CURLOPT_VERBOSE, 1L);
@@ -70,6 +75,16 @@ public:
 		// process postdata fields
 		if (!postdata.empty())
 		{
+#ifdef USE_CURL_FORM
+			for (auto& pd : postdata)
+			{
+				curl_formadd(&post, &last, CURLFORM_COPYNAME, pd.first.data(), CURLFORM_COPYCONTENTS, pd.second.data(), CURLFORM_END);
+#ifdef GET_URL_DEBUG
+				std::cerr << "POSTDATA:" << pd.first << ":" << pd.second << std::endl;
+#endif
+			}
+			curl_easy_setopt(_curl, CURLOPT_HTTPPOST, post);
+#else
 			mime = curl_mime_init(_curl);
 			for (auto& pd : postdata)
 			{
@@ -83,14 +98,20 @@ public:
 			}
 			part = curl_mime_addpart(mime);
 			curl_easy_setopt(_curl, CURLOPT_MIMEPOST, mime);
+#endif
 		}
 
 		// execute request and return results
 		CURLcode _res = curl_easy_perform(_curl);
 		curl_easy_cleanup(_curl);
+#ifdef USE_CURL_FORM
+		if (post != nullptr)
+			curl_formfree(post);
+#else
 		if (mime != nullptr)
 			curl_mime_free(mime);
-			
+#endif
+
 #ifdef GET_URL_DEBUG
 		std::cerr
 			<< "url_get::url=" << url << std::endl
@@ -133,7 +154,7 @@ void check_new_version()
 	if (version == "")
 		std::cout << "New version check failed!" << std::endl;
 	else if (version != VERSION)
-		std::cout << "Warning--New version " << version << " is available on:" << std::endl 
+		std::cout << "Warning--New version " << version << " is available on:" << std::endl
 			<< "\thttps://github.com/cr-marcstevens/dblpbibtex/" << std::endl;
 }
 

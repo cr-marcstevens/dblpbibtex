@@ -38,10 +38,10 @@ string::size_type bibfilestr_searchentry(const string& bibstr, string::size_type
 		string::size_type pos2 = bibstr.find_first_of("{(", pos);
 		if (pos2 == string::npos) return string::npos;
 		string cittype = sa::trim_copy(sa::to_lower_copy(bibstr.substr(pos+1, pos2-pos-1)));
-		if (cittype == "article" || cittype == "book" || cittype == "booklet" 
-		    || cittype == "inbook" || cittype == "incollection" || cittype == "inproceedings" 
-		    || cittype == "manual" || cittype == "mastersthesis" || cittype == "misc" 
-		    || cittype == "phdthesis" || cittype == "proceedings" || cittype == "techreport" 
+		if (cittype == "article" || cittype == "book" || cittype == "booklet"
+		    || cittype == "inbook" || cittype == "incollection" || cittype == "inproceedings"
+		    || cittype == "manual" || cittype == "mastersthesis" || cittype == "misc"
+		    || cittype == "phdthesis" || cittype == "proceedings" || cittype == "techreport"
 		    || cittype == "unpublished")
 			return pos;
 		offset = pos+1;
@@ -63,7 +63,7 @@ void parse_bibfile(const string& bibfile, bool verbose = true)
 		if (tmp.length() == 0 || tmp[0] != '=') {
 			pos = sa::to_lower_copy(bibstr).find("crossref", pos+1);
 			continue;
-		}		
+		}
 		tmp.erase(tmp.find(','));
 		tmp = sa::trim_copy(tmp, " =,{}'\"");
 		if (!tmp.empty()) {
@@ -134,8 +134,8 @@ try {
 	// needs to be enabled inside tex file with \nocite{dblpbibtex:enablesearch}
 	// searches change your tex files, use with care!
 	cout << "DBLPBibTeX - version " << VERSION << " - Copyright Marc Stevens 2010-2019" << endl
-		 << "Projectpage: https://github.com/cr-marcstevens/dblpbibtex2/" << endl;
-	params.enablesearch = false; 
+		 << "Projectpage: https://github.com/cr-marcstevens/dblpbibtex/" << endl;
+	params.enablesearch = false;
 
 	/* set default options for configuration file, override with environment variables*/
 	string BIBTEX = getenvvar("BIBTEXORG");
@@ -180,7 +180,7 @@ try {
 	switch (0) {
 	case 0: default:
 		std::ifstream ifs("dblpbibtex.cfg");
-		if (ifs) { 
+		if (ifs) {
 			cout << "Loading configuration from: dblpbibtex.cfg" << endl;
 			po::store(po::parse_config_file(ifs, desc), vm);
 			break;
@@ -188,7 +188,7 @@ try {
 		if (!HOME.empty()) {
 			string filename = (fs::path(HOME) / "dblpbibtex.cfg").string();
 			ifs.open(filename.c_str());
-			if (ifs) { 
+			if (ifs) {
 				cout << "Loading configuration from: '" << filename << "'" << endl;
 				po::store(po::parse_config_file(ifs, desc), vm);
 				break;
@@ -224,11 +224,11 @@ try {
 			includedirs.push_back(cmdlparams.back().substr(string("--include-directory=").length()));
 		if (sa::starts_with(cmdlparams.back(), "-include-directory="))
 			includedirs.push_back(cmdlparams.back().substr(string("-include-directory=").length()));
-		if (bibtexargs.length()) 
+		if (bibtexargs.length())
 			bibtexargs += " ";
 		bibtexargs += "\"" + cmdlparams.back() + "\"";
 	}
-	
+
 	/* parse auxfile */
 	if (auxfile.length() == 0) {
 		cout << desc << endl;
@@ -265,9 +265,9 @@ try {
 					string& citation = subcitations[i];
 					if (sa::istarts_with(citation, "dblpbibtex:")) {
 						/* parse options from aux file */
-						if (sa::istarts_with(citation, "dblpbibtex:nodownload")) 
+						if (sa::istarts_with(citation, "dblpbibtex:nodownload"))
 							params.nodownload = true;
-						if (sa::istarts_with(citation, "dblpbibtex:nodblp")) 
+						if (sa::istarts_with(citation, "dblpbibtex:nodblp"))
 							params.nodblp = true;
 						if (sa::istarts_with(citation, "dblpbibtex:nocryptoeprint"))
 							params.nocryptoeprint = true;
@@ -276,7 +276,7 @@ try {
 							if (params.mainbibfile.find_last_of('.') == string::npos)
 								params.mainbibfile += ".bib";
 							else if (params.mainbibfile.substr(params.mainbibfile.find_last_of('.')) != ".bib")
-								params.mainbibfile += ".bib";							
+								params.mainbibfile += ".bib";
 						}
 						if (sa::istarts_with(citation, "dblpbibtex:bibtex:"))
 							params.bibtexcmd = citation.substr( string("dblpbibtex:bibtex:").length() );
@@ -304,7 +304,7 @@ try {
 					bibfile += ".bib";
 					bibfiles.push_back(bibfile);
 				}
-			} else if (sa::starts_with(auxline, "\\@input{") || sa::starts_with(auxline, "\\input{") 
+			} else if (sa::starts_with(auxline, "\\@input{") || sa::starts_with(auxline, "\\input{")
 					|| sa::starts_with(auxline, "\\@include{") || sa::starts_with(auxline, "\\include{")) {
 				string auxfile3 = auxline.substr(auxline.find_first_of("{")+1);
 				auxfile3.erase(auxfile3.find_first_of("}"));
@@ -342,10 +342,10 @@ try {
 
 	set<string> downloadedcitations;
 	while (true) {
-		parse_bibfiles(false);		
+		parse_bibfiles(false);
 
 		downloadedcitations.clear();
-		
+
 		if (!load_mainbibfile()) {
 			cout << "Failed to load main bibfile: '" << mainbibfile << "'!" << endl;
 			break;
@@ -353,17 +353,17 @@ try {
 		cout << "Loaded content of main bibfile: '" << mainbibfile << "'!" << endl;
 		for (set<string>::const_iterator cit = citations.begin(); cit != citations.end(); ++cit)
 			if (havecitations.find(sa::to_lower_copy(*cit)) == havecitations.end()) {
-				if (checkedcitations.find(sa::to_lower_copy(*cit)) != checkedcitations.end()) 
+				if (checkedcitations.find(sa::to_lower_copy(*cit)) != checkedcitations.end())
 					continue;
 				checkedcitations.insert(sa::to_lower_copy(*cit));
 				cout << "New citation: '" << *cit << "'" << endl;
 				if (download_citation(*cit))
-					downloadedcitations.insert(*cit);				
+					downloadedcitations.insert(*cit);
 			}
 		for (set<string>::const_iterator cit = havecitreferences.begin(); cit != havecitreferences.end(); ++cit)
 			if (havecitations.find(sa::to_lower_copy(*cit)) == havecitations.end()) {
 				cout << "(NEW) crossref: '" << *cit << "'" << endl;
-				if (checkedcitations.find(sa::to_lower_copy(*cit)) != checkedcitations.end()) 
+				if (checkedcitations.find(sa::to_lower_copy(*cit)) != checkedcitations.end())
 					continue;
 				checkedcitations.insert(sa::to_lower_copy(*cit));
 				cout << "New crossref: '" << *cit << "'" << endl;
@@ -403,9 +403,9 @@ try {
 			pos_start = pos+1;
 			string bibstr = mainbibfilecontent.substr(pos);
 			string cittype = sa::trim_copy(sa::to_lower_copy(bibstr.substr(1, bibstr.find_first_of("{(")-1)));
-			if (cittype == "article" || cittype == "book" || cittype == "booklet" || cittype == "inbook" 
-				|| cittype == "incollection" || cittype == "inproceedings" || cittype == "manual" 
-				|| cittype == "mastersthesis" || cittype == "misc" || cittype == "phdthesis" 
+			if (cittype == "article" || cittype == "book" || cittype == "booklet" || cittype == "inbook"
+				|| cittype == "incollection" || cittype == "inproceedings" || cittype == "manual"
+				|| cittype == "mastersthesis" || cittype == "misc" || cittype == "phdthesis"
 				|| cittype == "proceedings" || cittype == "techreport" || cittype == "unpublished")
 				mainbibentryoffsets.push_back(pos);
 		}

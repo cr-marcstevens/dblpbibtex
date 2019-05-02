@@ -49,7 +49,7 @@ bool search_citation_dblp(const std::string& citkey)
 	}
 	auto p_header_body = url_get("https://dblp.org/search/?q=" + searchphrase);
 	auto& html = p_header_body.second;
-	
+
 	html.erase(html.begin(), sa::ifind(html,"<body"));
 	std::set<std::string> cits2;
 	while (html.find("/rec/bibtex/") != std::string::npos)
@@ -90,7 +90,7 @@ bool search_citation_cryptoeprint(const std::string& citkey)
 		;*/
 	auto p_hdr_html = url_get("https://eprint.iacr.org/eprint-bin/search.pl", postdata);
 	auto& html = p_hdr_html.second;
-	
+
 	html.erase(html.begin(), sa::ifind(html,"<body"));
 	while (sa::ifind(html,"<a href=") != html.end())
 	{

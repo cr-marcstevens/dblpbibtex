@@ -1,5 +1,6 @@
 AC_PREREQ([2.68])
-AC_INIT([dblpbibtex], [2.0.0], [marc@marc-stevens.nl],[dblpbibtex2],[https://github.com/cr-marcstevens/dblpbibtex2])
+# Important: DBLPBIBTEX version needs to match with: ./version src/core.hpp
+AC_INIT([dblpbibtex], [2.0a], [marc@marc-stevens.nl],[dblpbibtex],[https://github.com/cr-marcstevens/dblpbibtex])
 AC_CONFIG_SRCDIR([README.md])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -87,6 +88,22 @@ LIBCURL_CHECK_CONFIG()
 LIBS="$PTHREAD_LIBS $LIBS $LIBCURL"
 CPPFLAGS="$CPPFLAGS $LIBCURL_CPPFLAGS"
 CXXFLAGS="$CXXFLAGS $PTHREAD_CFLAGS"
+
+AC_MSG_CHECKING([if curl_mime_* is available])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <curl/curl.h>]],[[
+/* test for curl_mime, otherwise use curl_formadd */
+curl_global_init(CURL_GLOBAL_DEFAULT);
+CURL* curl = curl_easy_init();
+curl_mime* mime = nullptr;
+curl_mimepart* part = nullptr;
+mime = curl_mime_init(curl);
+part = curl_mime_addpart(mime);
+curl_mime_name(part, "test");
+return 0;
+]])],AC_MSG_RESULT([yes]),[
+AC_MSG_RESULT([using curl_formadd instead])
+AC_DEFINE([USE_CURL_FORM],[1],[Define if curl_mime_* is not available])
+])
 
 AC_CONFIG_FILES([
 Makefile

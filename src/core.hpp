@@ -6,7 +6,7 @@
 #ifndef DBLPBIBTEX_CORE_HPP
 #define DBLPBIBTEX_CORE_HPP
 
-#ifndef _MSC_VER
+#ifdef HAVE_CONFIG_H
 #include "config.h"
 #undef VERSION
 #else
@@ -16,7 +16,9 @@
 #define CURL_STATICLIB
 #endif
 
-#define VERSION "2.0.0"
+//#define USE_CURL_FORM // use for old versions of curl that doesn't have curl_mime yet
+
+#define VERSION "2.0a"
 
 #include <contrib/string_algo.hpp>
 namespace sa = string_algo;
@@ -61,7 +63,7 @@ struct parameters_type {
 	bool enablesearch; /* can only be enabled inside tex file with \nocite{dblpbibtex:enablesearch} */
 	bool cleanupmainbib; /* can only be enable inside tex file with \nocite{dblpbibtex:cleanupmainbib} */
 };
-parameters_type params;	
+parameters_type params;
 
 /*** small utility functions ***/
 std::string read_istream(std::istream& is) {
@@ -95,11 +97,11 @@ bool safe_write_file(const std::string& filename, const std::string& content)
 			fs::remove(filename + ".bak");
 		if (fs::exists(filename))
 			fs::copy_file(filename, filename + ".bak");
-	} catch (std::exception& e) { 
+	} catch (std::exception& e) {
 		std::cerr << e.what() << std::endl;
-		return false; 
-	} catch (...) { 
-		return false; 
+		return false;
+	} catch (...) {
+		return false;
 	}
 	std::ofstream ofs(filename.c_str());
 	if (!ofs) return false;
@@ -163,15 +165,15 @@ void replace_in_file(const std::string& filename, const std::string& needle, con
 /* !for all the .tex files in the same directory! */
 void texfiles_replace_key(const std::string& key, const std::vector<std::string>& cits)
 {
-        if (cits.empty())
-        	return;
+	if (cits.empty())
+		return;
 	std::string citsstr = sa::join(cits, ",");
-        fs::directory_iterator it(".");
-        for (; it != fs::directory_iterator(); ++it) 
-        {
-                if (sa::ends_with(it->path().string(), ".tex"))
-                        replace_in_file(it->path().string(), key, citsstr);
-        }
+	fs::directory_iterator it(".");
+	for (; it != fs::directory_iterator(); ++it)
+	{
+		if (sa::ends_with(it->path().string(), ".tex"))
+			replace_in_file(it->path().string(), key, citsstr);
+	}
 }
 
 #endif
