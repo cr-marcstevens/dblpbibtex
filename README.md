@@ -18,7 +18,7 @@ For instance, on many linux machines you can install the boost with
 and on Mac OS X you can install boost with 
 ```
    brew install boost
-```.
+```
 
 In either case (C++17 filesystem or Boost filesystem module), you can then compile dblpbibtex by simply running:
 ```
