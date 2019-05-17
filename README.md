@@ -9,16 +9,10 @@ DBLP BibTeX is a BibTeX aid program that can automatically download citations an
 ## Building DBLP BibTeX
 
 DBLP BibTex depends on autotools, a C++17 compatible compiler and libcurl.
-If you don't have a C++17 compatible compiler with the filesystem module then
+
+*Only* if you don't have a C++17 compatible compiler with the filesystem module then
 instead you can also use a C++11 compatible compiler together with the Boost C++ library.
-For instance, on many linux machines you can install the boost with 
-```
-   sudo apt-get install libboost-dev
-```
-and on Mac OS X you can install boost with 
-```
-   brew install boost
-```
+For instance, on many linux machines you can install the boost with `sudo apt-get install libboost-dev`, and on Mac OS X you can install boost with `brew install boost`.
 
 In either case (C++17 filesystem or Boost filesystem module), you can then compile dblpbibtex by simply running:
 ```
