@@ -212,7 +212,7 @@ try {
 		if (cmdlparams.back() == "-h" || cmdlparams.back() == "--help" || cmdlparams.back() == "-help") {
 			cout << desc << endl;
 			cout << endl << "Running 'bibtex --help':" << endl;
-			return system((params.bibtexcmd + "--help").c_str());
+			return system((params.bibtexcmd + " --help").c_str());
 		}
 		if (cmdlparams.back()[0] != '-') {
 			if (sa::ends_with(cmdlparams.back(), ".aux"))
