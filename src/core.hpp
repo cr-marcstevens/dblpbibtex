@@ -51,6 +51,10 @@ std::string mainbibfile; /* first bibfile encountered will be used to insert dow
 std::string mainbibfilecontent; /* content from main bibfile to insert downloaded citations and references */
 std::set<std::string> checkedcitations; /* only download citation once per run to prevent mistakes */
 
+#define DBLP_FORMAT_COMPACT       0
+#define DBLP_FORMAT_STANDARD      1
+#define DBLP_FORMAT_EXT_CROSSREF  2
+
 /* parameters values loaded from: environment variables, configuration file and auxfile parameters (overwritten in that order)*/
 struct parameters_type {
 	std::string bibtexcmd;
@@ -59,13 +63,27 @@ struct parameters_type {
 	bool nonewversioncheck;
 	bool nodownload;
 	bool nodblp;
+	int dblpformat;
 	bool nocryptoeprint;
 	bool enablesearch; /* can only be enabled inside tex file with \nocite{dblpbibtex:enablesearch} */
 	bool cleanupmainbib; /* can only be enable inside tex file with \nocite{dblpbibtex:cleanupmainbib} */
 };
-parameters_type params;
+extern parameters_type params;
 
 /*** small utility functions ***/
+std::string dblpformat_name(int dblpformat)
+{
+	switch (dblpformat)
+	{
+	default:
+	case 1:
+		return "standard";
+	case 0:
+		return "compact";
+	case 2:
+		return "ext_crossref";
+	}
+}
 std::string read_istream(std::istream& is) {
 	std::string tmp;
 	char buffer[1024];

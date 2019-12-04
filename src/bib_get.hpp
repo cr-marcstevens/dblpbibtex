@@ -12,7 +12,7 @@ namespace sa = string_algo;
 /*** download citations ***/
 bool download_dblp_citation(const std::string& key, bool prepend = true)
 {
-	auto hdr_html = url_get("https://dblp.org/rec/bib2/" + key.substr(5));
+	auto hdr_html = url_get("https://dblp.org/rec/bib" + std::to_string(params.dblpformat) + "/" + key.substr(5));
 	auto& html = hdr_html.second;
 	if (html.empty())
 		return false;

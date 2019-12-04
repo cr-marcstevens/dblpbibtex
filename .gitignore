@@ -69,3 +69,7 @@ vs2017/x64/Release/dblpbibtex.tlog/link.command.1.tlog
 vs2017/x64/Release/dblpbibtex.tlog/link.read.1.tlog
 vs2017/x64/Release/dblpbibtex.tlog/link.write.1.tlog
 vs2017/x64/Release/vc141.pdb
+/.vs
+/vs2017/.vs/dblpbibtex/v16
+*.pdb
+/vs2017/x64/Release/dblpbibtex.vcxproj.FileListAbsolute.txt
