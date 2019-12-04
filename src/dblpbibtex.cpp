@@ -29,6 +29,8 @@ namespace sa = string_algo;
 
 using namespace std;
 
+parameters_type params;
+
 /*** parse bibfiles ***/
 string::size_type bibfilestr_searchentry(const string& bibstr, string::size_type offset)
 {
@@ -136,6 +138,7 @@ try {
 	cout << "DBLPBibTeX - version " << VERSION << " - Copyright Marc Stevens 2010-2019" << endl
 		 << "Projectpage: https://github.com/cr-marcstevens/dblpbibtex/" << endl;
 	params.enablesearch = false;
+	std::string dblpformat;
 
 	/* set default options for configuration file, override with environment variables*/
 	string BIBTEX = getenvvar("BIBTEXORG");
@@ -163,6 +166,9 @@ try {
 		("nodblp"
 			, po::bool_switch(&params.nodblp)
 			, "Do not download new citations or crossrefs from DBLP.")
+		("dblpformat"
+			, po::value<string>(&dblpformat)->default_value("standard")
+			, "Choose DBLP bib format: 'compact'/'0', 'standard'/'1', 'ext_crossref'/'2'")
 		("nocryptoeprint"
 			, po::bool_switch(&params.nocryptoeprint)
 			, "Do not download new citations from IACR crypto eprint.")
@@ -269,6 +275,8 @@ try {
 							params.nodownload = true;
 						if (sa::istarts_with(citation, "dblpbibtex:nodblp"))
 							params.nodblp = true;
+						if (sa::istarts_with(citation, "dblpbibtex:dblpformat:"))
+							dblpformat = citation.substr( string("dblpbibtex:dblpformat:").length() );
 						if (sa::istarts_with(citation, "dblpbibtex:nocryptoeprint"))
 							params.nocryptoeprint = true;
 						if (sa::istarts_with(citation, "dblpbibtex:mainbibfile:")) {
@@ -313,6 +321,13 @@ try {
 		}
 	}
 
+	// determine DBLP format
+	params.dblpformat = 1;
+	if (dblpformat == "0" || dblpformat == "compact")
+		params.dblpformat = 0;
+	if (dblpformat == "2" || dblpformat == "ext_crossref" || dblpformat == "crossref")
+		params.dblpformat = 2;
+
 	cout << "Configuration:" << endl;
 	cout << "\tbibtex: '" << params.bibtexcmd << "'" << endl;
 	if (params.mainbibfile.empty())
@@ -323,6 +338,8 @@ try {
 		cout << "\tNo downloads of new citations or crossrefs." << endl;
 	if (params.nodblp)
 		cout << "\tNo downloads from DBLP." << endl;
+	else
+		cout << "\tDBLP format: " << dblpformat_name(params.dblpformat) << endl;
 	if (params.nocryptoeprint)
 		cout << "\tNo downloads from cryptoeprint." << endl;
 
