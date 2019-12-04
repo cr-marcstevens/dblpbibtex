@@ -81,7 +81,7 @@ std::string dblpformat_name(int dblpformat)
 	case 0:
 		return "compact";
 	case 2:
-		return "ext_crossref";
+		return "crossref";
 	}
 }
 std::string read_istream(std::istream& is) {

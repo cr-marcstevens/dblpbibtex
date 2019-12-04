@@ -168,7 +168,7 @@ try {
 			, "Do not download new citations or crossrefs from DBLP.")
 		("dblpformat"
 			, po::value<string>(&dblpformat)->default_value("standard")
-			, "Choose DBLP bib format: 'compact'/'0', 'standard'/'1', 'ext_crossref'/'2'")
+			, "Choose DBLP bib format: 'compact'/'0', 'standard'/'1', 'crossref'/'2'")
 		("nocryptoeprint"
 			, po::bool_switch(&params.nocryptoeprint)
 			, "Do not download new citations from IACR crypto eprint.")
@@ -322,10 +322,11 @@ try {
 	}
 
 	// determine DBLP format
-	params.dblpformat = 1;
+	params.dblpformat = 1; // standard format
+	sa::to_lower(dblpformat);
 	if (dblpformat == "0" || dblpformat == "compact")
 		params.dblpformat = 0;
-	if (dblpformat == "2" || dblpformat == "ext_crossref" || dblpformat == "crossref")
+	if (dblpformat == "2" || dblpformat == "crossref")
 		params.dblpformat = 2;
 
 	cout << "Configuration:" << endl;
