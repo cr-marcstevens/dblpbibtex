@@ -73,3 +73,4 @@ vs2017/x64/Release/vc141.pdb
 /vs2017/.vs/dblpbibtex/v16
 *.pdb
 /vs2017/x64/Release/dblpbibtex.vcxproj.FileListAbsolute.txt
+/vs2017/Debug/dblpbibtex.tlog
