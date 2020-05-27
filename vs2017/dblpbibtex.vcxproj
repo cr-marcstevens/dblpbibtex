@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\bib_get.hpp" />
+    <ClInclude Include="..\src\bib_parse.hpp" />
     <ClInclude Include="..\src\bib_search.hpp" />
     <ClInclude Include="..\src\core.hpp" />
     <ClInclude Include="..\src\network.hpp" />

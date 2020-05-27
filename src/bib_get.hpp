@@ -3,8 +3,12 @@
 //    (See accompanying file LICENSE or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#ifndef DBLPBIBTEX_BIB_GET_HPP
+#define DBLPBIBTEX_BIB_GET_HPP
+
 #include "core.hpp"
 #include "network.hpp"
+#include "bib_parse.hpp"
 
 #include <contrib/string_algo.hpp>
 namespace sa = string_algo;
@@ -17,16 +21,12 @@ bool download_dblp_citation(const std::string& key, bool prepend = true)
 	if (html.empty())
 		return false;
 
-	auto it = sa::find(html, '@');
-	if (it == html.end())
-		return false;
-	auto it2 = sa::find(html, '@', it+1);
-	html.erase(it2, html.end());
+	auto bibentry = extract_bibentry(html);
 
-	if (html.empty())
+	if (bibentry.empty())
 		return false;
-	std::cout << "Downloaded bibtex entry:" << std::endl << html << std::endl;
-	add_entry_to_mainbibfile(html, prepend);
+	std::cout << "Downloaded bibtex entry:" << std::endl << bibentry << std::endl;
+	add_entry_to_mainbibfile(bibentry, prepend);
 	return true;
 }
 
@@ -38,14 +38,15 @@ bool download_cryptoeprint_citation(const std::string& key, bool prepend = true)
 	auto& html = hdr_html.second;
 	if (html.empty())
 		return false;
-
 	html.erase(html.begin(), sa::ifind(html,"<pre>")+5);
 	html.erase(sa::ifind(html,"</pre>"), html.end());
 
-	if (html.empty())
+	auto bibentry = extract_bibentry(html);
+
+	if (bibentry.empty())
 		return false;
-	std::cout << "Downloaded bibtex entry:" << std::endl << html << std::endl;
-	add_entry_to_mainbibfile(html, prepend);
+	std::cout << "Downloaded bibtex entry:" << std::endl << bibentry << std::endl;
+	add_entry_to_mainbibfile(bibentry, prepend);
 	return true;
 }
 
@@ -82,3 +83,5 @@ bool download_citation(const std::string& key, bool prepend = true)
 		return search_citation_bib(key);
 	return false;
 }
+
+#endif

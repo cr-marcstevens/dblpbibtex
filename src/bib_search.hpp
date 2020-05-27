@@ -3,6 +3,9 @@
 //    (See accompanying file LICENSE or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
+#ifndef DBLPBIBTEX_BIB_SEARCH_HPP
+#define DBLPBIBTEX_BIB_SEARCH_HPP
+
 #include "core.hpp"
 
 #include <contrib/string_algo.hpp>
@@ -119,3 +122,4 @@ bool search_citation_cryptoeprint(const std::string& citkey)
 	return true;
 }
 
+#endif

@@ -10,6 +10,7 @@
 #include "network.hpp"
 #include "bib_search.hpp"
 #include "bib_get.hpp"
+#include "bib_parse.hpp"
 
 #include <contrib/program_options.hpp>
 namespace po = program_options;
@@ -32,23 +33,6 @@ using namespace std;
 parameters_type params;
 
 /*** parse bibfiles ***/
-string::size_type bibfilestr_searchentry(const string& bibstr, string::size_type offset)
-{
-	while (true) {
-		string::size_type pos = bibstr.find('@', offset);
-		if (pos == string::npos) return string::npos;
-		string::size_type pos2 = bibstr.find_first_of("{(", pos);
-		if (pos2 == string::npos) return string::npos;
-		string cittype = sa::trim_copy(sa::to_lower_copy(bibstr.substr(pos+1, pos2-pos-1)));
-		if (cittype == "article" || cittype == "book" || cittype == "booklet"
-		    || cittype == "inbook" || cittype == "incollection" || cittype == "inproceedings"
-		    || cittype == "manual" || cittype == "mastersthesis" || cittype == "misc"
-		    || cittype == "phdthesis" || cittype == "proceedings" || cittype == "techreport"
-		    || cittype == "unpublished")
-			return pos;
-		offset = pos+1;
-	}
-}
 void parse_bibfile(const string& bibfile, bool verbose = true)
 {
 	if (mainbibfile.empty())
@@ -77,9 +61,9 @@ void parse_bibfile(const string& bibfile, bool verbose = true)
 	}
 	/* find all citations */
 	string::size_type pos2;
-	pos = bibfilestr_searchentry(bibstr, 0);
+	pos = str_findbibentry(bibstr, 0);
 	while (pos < bibstr.length()) {
-		pos2 = bibfilestr_searchentry(bibstr, pos+1);
+		pos2 = str_findbibentry(bibstr, pos+1);
 		string entry = sa::trim_copy(bibstr.substr(pos, (pos2==string::npos ? pos2 : pos2-pos) ));
 		string key = entry.substr(entry.find_first_of("{(")+1);
 		sa::to_lower(entry);
