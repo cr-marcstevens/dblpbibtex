@@ -54,7 +54,7 @@ std::string extract_bibentry(const std::string& str, std::string::size_type pos)
 		{
 			if (str[posbr] == '{')
 				++open_brackets;
-			else if (str[posbr] == '{')
+			else if (str[posbr] == '}')
 				if (--open_brackets == 0)
 					break;
 		}
