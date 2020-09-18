@@ -50,20 +50,24 @@ bool search_citation_dblp(const std::string& citkey)
 		std::cout << "Search phrase too short <5 chars: '" << searchphrase << "'" << std::endl;
 		return false;
 	}
-	auto p_header_body = url_get("https://dblp.org/search/?q=" + searchphrase);
+	auto p_header_body = url_get("https://dblp.org/search?q=" + searchphrase);
 	auto& html = p_header_body.second;
 
 	html.erase(html.begin(), sa::ifind(html,"<body"));
 	std::set<std::string> cits2;
-	while (html.find("/rec/bibtex/") != std::string::npos)
+	while (html.find("/rec/") != std::string::npos)
 	{
-		std::string cit = html.substr(html.find("/rec/bibtex/"));
+		std::string cit = html.substr(html.find("/rec/"));
 		cit.erase(sa::to_lower_copy(cit).find_first_not_of("abcdefghijklmnopqrstuvwxyz0123456789:/.+-$&@=!?"));
-		cit.erase(0, std::string("/rec/bibtex/").length());
-		cit = "DBLP:" + cit;
-		cits2.insert(cit);
-		html.erase(0, html.find("/rec/bibtex/")+1);
-		std::cout << "Found citations: " << cit << std::endl;
+		cit.erase(0, std::string("/rec/").length());
+		if (cit.substr(cit.size()-5) == ".html")
+		{
+			cit.resize(cit.size()-5);
+			cit = "DBLP:" + cit;
+			cits2.insert(cit);
+			std::cout << "Found citations: " << cit << std::endl;
+		}
+		html.erase(0, html.find("/rec/")+1);
 	}
 	std::vector<std::string> cits(cits2.begin(), cits2.end());
 	if (cits.size() == 0)
