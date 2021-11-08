@@ -119,7 +119,7 @@ try {
 #endif
 	// needs to be enabled inside tex file with \nocite{dblpbibtex:enablesearch}
 	// searches change your tex files, use with care!
-	cout << "DBLPBibTeX - version " << VERSION << " - Copyright Marc Stevens 2010-2019" << endl
+	cout << "DBLPBibTeX - version " << DBLPBIBTEX_VERSION << " - Copyright Marc Stevens 2010-2019" << endl
 		 << "Projectpage: https://github.com/cr-marcstevens/dblpbibtex/" << endl;
 	params.enablesearch = false;
 	std::string dblpformat;
