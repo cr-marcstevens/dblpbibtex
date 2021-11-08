@@ -1,12 +1,12 @@
 #!/bin/bash
 
-rm -rf tmp
+rm -rf tmp &>/dev/null
 mkdir tmp
 cd tmp
 
 function cleanup
 {
-	rm *.bib *.tex *.aux
+	rm *.bib *.tex *.aux &>/dev/null
 }
 function make_tex_doc
 {
@@ -48,8 +48,12 @@ echo "================"
 
 }
 
-rm test.log
+rm test.log &>/dev/null
 test_bib_download "cryptoeprint:2017:190"
+if [ `grep "The first collision for full SHA-1" test.bib | wc -l` -ne 1 ]; then echo "! Failed !"; exit 1; fi
 test_bib_download "DBLP:conf/crypto/StevensBKAM17"
+if [ `grep "Lecture Notes in Computer Science" test.bib | wc -l` -ne 1 ]; then echo "! Failed !"; exit 1; fi
 test_bib_download "dblpbibtex:enablesearch" "search-cryptoeprint:stevens+karpman"
+if [ `grep "Report 2015" test.bib | wc -l` -ne 2 ]; then echo "! Failed !"; exit 1; fi
 test_bib_download "DBLP:conf/icfp/HamanaF11"
+if [ `grep "SIGPLAN" test.bib | wc -l` -ne 1 ]; then echo "! Failed !"; exit 1; fi
