@@ -8,10 +8,7 @@
 
 #include "core.hpp"
 
-extern "C"
-{
 #include <curl/curl.h>
-}
 
 #include <string>
 #include <iostream>
@@ -153,7 +150,7 @@ void check_new_version()
 	html.erase(html.find_first_not_of(".0123456789"));
 	if (version == "")
 		std::cout << "New version check failed!" << std::endl;
-	else if (version != VERSION)
+	else if (version != DBLPBIBTEX_VERSION)
 		std::cout << "Warning--New version " << version << " is available on:" << std::endl
 			<< "\thttps://github.com/cr-marcstevens/dblpbibtex/" << std::endl;
 }

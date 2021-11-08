@@ -18,7 +18,7 @@
 
 //#define USE_CURL_FORM // use for old versions of curl that doesn't have curl_mime yet
 
-#define VERSION "2.3"
+#define DBLPBIBTEX_VERSION "2.3"
 
 #include <contrib/string_algo.hpp>
 namespace sa = string_algo;
