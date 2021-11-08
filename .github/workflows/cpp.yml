@@ -7,14 +7,20 @@ on:
     branches: [ master ]
 
 jobs:
-  build-os-boost:
+  build:
     strategy:
       matrix:
-        os: [ ubuntu-18.04, ubuntu-latest, macos-latest ]
+        os: [ ubuntu-latest, macos-latest ]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
+    - name: Install dependencies (ubuntu-latest)
+      run: sudo apt-get install -y libcurl4-openssl-dev
+      if: matrix.os == 'ubuntu-latest'
+    - name: Install dependencies (macos-latest)
+      run: brew install curl
+      if: matrix.os == 'macos-latest'
     - name: Prepare
       run: autoreconf --install
     - name: Configure
