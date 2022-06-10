@@ -2,11 +2,12 @@ AC_PREREQ([2.68])
 # Important: DBLPBIBTEX version needs to match with: ./version src/core.hpp
 AC_INIT([dblpbibtex], [2.3], [marc@marc-stevens.nl],[dblpbibtex],[https://github.com/cr-marcstevens/dblpbibtex])
 AC_CONFIG_SRCDIR([README.md])
-AC_CONFIG_HEADERS([src/config.h])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 
+AX_PREFIX_CONFIG_H([src/config.h])
 
 DEFAULT_CXXFLAGS="-O2"
 AS_IF([test "x$CXXFLAGS" = "x"],

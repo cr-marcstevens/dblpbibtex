@@ -8,10 +8,9 @@
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
-//#undef VERSION
 #else
-#define CXX17FILESYSTEMHEADER <filesystem>
-#define CXX17FILESYSTEMNAMESPACE std::filesystem
+#define DBLPBIBTEX_CXX17FILESYSTEMHEADER <filesystem>
+#define DBLPBIBTEX_CXX17FILESYSTEMNAMESPACE std::filesystem
 #define _CRT_SECURE_NO_WARNINGS
 #define CURL_STATICLIB
 #endif
@@ -33,8 +32,8 @@ namespace sa = string_algo;
 #include <set>
 #include <map>
 
-#include CXX17FILESYSTEMHEADER           /* <filesystem> / <experimental/filesystem> */
-namespace fs = CXX17FILESYSTEMNAMESPACE; /* std::filesystem / std::experimental::filesystem; */
+#include DBLPBIBTEX_CXX17FILESYSTEMHEADER           /* <filesystem> / <experimental/filesystem> */
+namespace fs = DBLPBIBTEX_CXX17FILESYSTEMNAMESPACE; /* std::filesystem / std::experimental::filesystem; */
 
 /*** global variables ***/
 std::string bibtexargs; /* from bibtex command line */
