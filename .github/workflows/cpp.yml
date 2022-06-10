@@ -23,6 +23,8 @@ jobs:
       if: matrix.os == 'macos-latest'
     - name: Prepare
       run: autoreconf --install
+    - name: tmp debug
+      run: cat /Applications/Xcode_13.2.1.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/cstddef
     - name: Configure
       run: ./configure
     - name: make

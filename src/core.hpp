@@ -8,7 +8,7 @@
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
-#undef VERSION
+//#undef VERSION
 #else
 #define CXX17FILESYSTEMHEADER <filesystem>
 #define CXX17FILESYSTEMNAMESPACE std::filesystem
