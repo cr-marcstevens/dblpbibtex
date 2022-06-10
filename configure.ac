@@ -35,26 +35,12 @@ AS_IF([test "x$cross_compiling" != "xyes" && test "x$usedefaultcxxflags" = "xyes
 	[AX_CHECK_COMPILE_FLAG([-march=native], [CXXFLAGS="$CXXFLAGS -march=native"], [])])
 
 
+# test for C++17
+AX_CXX_COMPILE_STDCXX([17],,[optional])
+AM_CONDITIONAL([HAVE_CXX17], [test "x$HAVE_CXX17" != "x"])
 
-AX_BOOST_BASE([1.57],
-[
- AC_MSG_NOTICE([Boost C++ libraries found, will use C++11 and Boost filesystem module])
- AX_BOOST_FILESYSTEM
- AX_BOOST_SYSTEM
-
- CPPFLAGS="$BOOST_CPPFLAGS $CPPFLAGS"
- LDFLAGS="$BOOST_LDFLAGS $LDFLAGS"
- LIBS="$BOOST_FILESYSTEM_LIB $BOOST_SYSTEM_LIB $LIBS"
- CXX17FILESYSTEMHEADER="<boost/filesystem.hpp>"
- CXX17FILESYSTEMNAMESPACE="boost::filesystem"
-
- AX_CXX_COMPILE_STDCXX([11],[noext],[mandatory])
-]
-,
-[
- AC_MSG_NOTICE([Boost C++ libraries not found, will use C++17 filesystem module])
- AX_CXX_COMPILE_STDCXX([17],[noext],[mandatory])
-
+# test for C++17 filesystem
+AM_COND_IF([HAVE_CXX17],[
  AC_MSG_CHECKING([for C++17 filesystem header])
  CXX17FILESYSTEMHEADER=""
  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[@%:@include <filesystem>]])],
@@ -65,7 +51,12 @@ AX_BOOST_BASE([1.57],
 		 CXX17FILESYSTEMNAMESPACE="std::experimental::filesystem"
 		 ])
 	)
- AS_IF([test "x$CXX17FILESYSTEMHEADER" = "x"], AC_MSG_ERROR([not found]), AC_MSG_RESULT($CXX17FILESYSTEMHEADER))
+ AS_IF([test "x$CXX17FILESYSTEMHEADER" = "x"], AC_MSG_RESULT([not found]), AC_MSG_RESULT($CXX17FILESYSTEMHEADER))
+])
+
+# if C++17 filesystem header found then check if library is needed
+# if no C++17 filesystem header found then check for Boost filesystem library instead
+AS_IF([test "x$CXX17FILESYSTEMHEADER" != "x"],[
 
  AC_MSG_CHECKING([for C++17 filesystem library])
  AC_LINK_IFELSE([AC_LANG_PROGRAM([[@%:@include $CXX17FILESYSTEMHEADER]],[[return $CXX17FILESYSTEMNAMESPACE :: exists(".");]])],
@@ -76,12 +67,30 @@ AX_BOOST_BASE([1.57],
 		[AC_MSG_FAILURE([not found])]
 		)
 	])
+],[
+
+ AC_MSG_NOTICE([No C++17 filesystem found, will try to use Boost filesystem module instead])
+ AX_BOOST_BASE([1.57],
+ [
+  AC_MSG_NOTICE([Boost C++ libraries found, will use C++11 and Boost filesystem module])
+  AX_BOOST_FILESYSTEM
+  AX_BOOST_SYSTEM
+
+  CPPFLAGS="$BOOST_CPPFLAGS $CPPFLAGS"
+  LDFLAGS="$BOOST_LDFLAGS $LDFLAGS"
+  LIBS="$BOOST_FILESYSTEM_LIB $BOOST_SYSTEM_LIB $LIBS"
+  CXX17FILESYSTEMHEADER="<boost/filesystem.hpp>"
+  CXX17FILESYSTEMNAMESPACE="boost::filesystem"
+ 
+  AX_CXX_COMPILE_STDCXX([11],,[mandatory])
+ ],[
+  AC_MSG_FAILURE([No C++17 or Boost filesystem module found])
+ ])
+
 ])
 
 AC_DEFINE_UNQUOTED([CXX17FILESYSTEMHEADER],[$CXX17FILESYSTEMHEADER],[header file for C++17 filesystem])
 AC_DEFINE_UNQUOTED([CXX17FILESYSTEMNAMESPACE],[$CXX17FILESYSTEMNAMESPACE],[namespace for C++17 filesystem])
-
-
 
 LIBCURL_CHECK_CONFIG()
 
