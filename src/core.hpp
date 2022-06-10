@@ -6,6 +6,19 @@
 #ifndef DBLPBIBTEX_CORE_HPP
 #define DBLPBIBTEX_CORE_HPP
 
+#include <iostream>
+#include <fstream>
+#include <cstdio>
+#include <stdexcept>
+
+#include <string>
+#include <vector>
+#include <set>
+#include <map>
+
+#include <contrib/string_algo.hpp>
+namespace sa = string_algo;
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #else
@@ -18,19 +31,6 @@
 //#define USE_CURL_FORM // use for old versions of curl that doesn't have curl_mime yet
 
 #define DBLPBIBTEX_VERSION "2.3"
-
-#include <contrib/string_algo.hpp>
-namespace sa = string_algo;
-
-#include <iostream>
-#include <fstream>
-#include <cstdio>
-#include <stdexcept>
-
-#include <string>
-#include <vector>
-#include <set>
-#include <map>
 
 #include DBLPBIBTEX_CXX17FILESYSTEMHEADER           /* <filesystem> / <experimental/filesystem> */
 namespace fs = DBLPBIBTEX_CXX17FILESYSTEMNAMESPACE; /* std::filesystem / std::experimental::filesystem; */
