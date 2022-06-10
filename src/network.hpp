@@ -145,7 +145,7 @@ url_get_t url_get;
 /*** check for new version ***/
 void check_new_version()
 {
-	std::string html = url_get("https://raw.githubusercontent.com/cr-marcstevens/dblpbibtex/master/version").second;
+	std::string html = url_get("https://raw.githubusercontent.com/cr-marcstevens/dblpbibtex/master/version.txt").second;
 	std::string version = html.substr(html.find("VERSION:")+8);
 	html.erase(html.find_first_not_of(".0123456789"));
 	if (version == "")

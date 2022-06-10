@@ -1,6 +1,6 @@
 AC_PREREQ([2.68])
 # Important: DBLPBIBTEX version needs to match with: ./version src/core.hpp
-AC_INIT([dblpbibtex], [2.3], [marc@marc-stevens.nl],[dblpbibtex],[https://github.com/cr-marcstevens/dblpbibtex])
+AC_INIT([dblpbibtex], [2.4], [marc@marc-stevens.nl],[dblpbibtex],[https://github.com/cr-marcstevens/dblpbibtex])
 AC_CONFIG_SRCDIR([README.md])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])

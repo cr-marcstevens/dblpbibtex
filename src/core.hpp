@@ -30,7 +30,7 @@ namespace sa = string_algo;
 
 //#define USE_CURL_FORM // use for old versions of curl that doesn't have curl_mime yet
 
-#define DBLPBIBTEX_VERSION "2.3"
+#define DBLPBIBTEX_VERSION "2.4"
 
 #include DBLPBIBTEX_CXX17FILESYSTEMHEADER           /* <filesystem> / <experimental/filesystem> */
 namespace fs = DBLPBIBTEX_CXX17FILESYSTEMNAMESPACE; /* std::filesystem / std::experimental::filesystem; */
