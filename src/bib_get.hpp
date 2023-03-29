@@ -33,16 +33,15 @@ bool download_dblp_citation(const std::string& key, bool prepend = true)
 
 bool download_cryptoeprint_citation(const std::string& key, bool prepend = true)
 {
-	std::string year = std::string(key.begin()+key.find(':')+1, key.begin()+key.find_last_of(':'));
-	std::string paper = key.substr(key.find_last_of(':')+1);
-	auto hdr_html = url_get("https://eprint.iacr.org/eprint-bin/cite.pl?entry=" + year + "/" + paper);
+	std::string year = key.substr(key.find_first_of(':')+1, 4);
+	std::string paper = key.substr(key.find_last_of(":/")+1);
+    std::string url ="https://eprint.iacr.org/" + year + "/" + paper;
+    auto hdr_html = url_get(url);
 	auto& html = hdr_html.second;
 	if (html.empty())
 		return false;
-	html.erase(html.begin(), sa::ifind(html,"<pre>")+5);
-	html.erase(sa::ifind(html,"</pre>"), html.end());
 
-	auto bibentry = extract_bibentry(html);
+    auto bibentry = extract_bibentry(html.substr(html.find("<pre id=\"bibtex\">"), html.find("</pre>")-html.find("<pre id=\"bibtex\">")));
 
 	if (bibentry.empty())
 		return false;
