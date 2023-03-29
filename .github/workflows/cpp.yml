@@ -15,6 +15,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
+    - name: Update packages (ubuntu-latest)
+      run: sudo apt-get update
+      if: matrix.os == 'ubuntu-latest'
     - name: Install dependencies (ubuntu-latest)
       run: sudo apt-get install -y libcurl4-openssl-dev
       if: matrix.os == 'ubuntu-latest'
