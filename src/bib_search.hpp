@@ -80,44 +80,33 @@ bool search_citation_dblp(const std::string& citkey)
 
 bool search_citation_cryptoeprint(const std::string& citkey)
 {
+    std::cout << "Searching cryptoeprint" << std::endl;
 	std::string key = citkey.substr(citkey.find(':')+1);
-	std::vector<std::string> cits;
-	std::string searchstr = sa::replace_all_copy(sa::to_lower_copy(key), std::string("+"), std::string(" "));
-	if (searchstr.length() < 5) {
-		std::cout << "Search phrase too short <5 chars: '" << searchstr << "'" << std::endl;
+	std::string searchphrase = key;
+	if (searchphrase.length() < 5) {
+		std::cout << "Search phrase too short <5 chars: '" << searchphrase << "'" << std::endl;
 		return false;
 	}
-	std::vector<std::pair<std::string,std::string>> postdata;
-	postdata.emplace_back("anywords", searchstr);
-/*	std::string postdata = std::string()
-		+ "-----------------------------41184676334\r\n"
-		+ "Content-Disposition: form-data; name=\"anywords\"\r\n\r\n"
-		+ searchstr + "\r\n"
-		+ "-----------------------------41184676334\r\n"
-		;*/
-	auto p_hdr_html = url_get("https://eprint.iacr.org/eprint-bin/search.pl", postdata);
-	auto& html = p_hdr_html.second;
+	auto p_header_body = url_get("https://eprint.iacr.org/search?q=" + searchphrase);
+    std::cout <<  "https://eprint.iacr.org/search?q=" + searchphrase << std::endl;
+	auto& html = p_header_body.second;
 
 	html.erase(html.begin(), sa::ifind(html,"<body"));
-	while (sa::ifind(html,"<a href=") != html.end())
+	std::set<std::string> cits2;
+    std::string denominator = "class=\"paperlink\"";
+	while (html.find(denominator) != std::string::npos)
 	{
-		// find all href strings
-		html.erase(html.begin(), sa::ifind(html, "<a href="));
-		html.erase(0, html.find_first_of("'\"")+1);
-		std::string href = html.substr(0, html.find_first_of("'\""));
-		// check if href string is of correct form /year/paper where year and paper are numerics
-		if (href.empty() || href[0] != '/') continue;
-		href.erase(0, 1);
-		if (href.find('/') == std::string::npos) continue;
-		std::string year = href.substr(0, href.find('/'));
-		std::string paper = href.substr(href.find('/')+1);
-		if (year.find_first_not_of("0123456789") != std::string::npos)
-			continue;
-		if (paper.find_first_not_of("0123456789") != std::string::npos)
-			continue;
-		cits.push_back("cryptoeprint:" + year + ":" + paper);
-		std::cout << "Found citations: " << cits.back() << std::endl;
+          
+        std::string cit = html.substr(html.find(denominator));
+        cit.erase(0, cit.find('>')+1);
+        cit.erase(cit.find('<'), cit.size()-1);
+        cit = "cryptoeprint:" + cit;
+        cits2.insert(cit);
+        std::cout << "Found citations: " << cit << std::endl;
+		html.erase(0, html.find(denominator)+1);
+
 	}
+	std::vector<std::string> cits(cits2.begin(), cits2.end());
 	if (cits.size() == 0)
 		return false;
 	if (cits.size() > 5)
